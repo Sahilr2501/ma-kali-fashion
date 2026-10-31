@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-maroon: #551c28;
+  --color-ivory: #f7f0e6;
+  --color-gold: #c6a15b;
+  --color-charcoal: #292524;
+  --font-sans: var(--font-outfit);
+  --font-serif: var(--font-cormorant);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #f7f0e6;
+  color: #292524;
+  font-family: var(--font-outfit), sans-serif;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #c6a15b;
+  outline-offset: 2px;
+}
