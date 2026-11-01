@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 
-const password = process.argv[2];
+const password = process.argv.slice(2).join(" ").trim();
 
 if (!password) {
   console.error("Usage: npm run hash-password -- <password>");

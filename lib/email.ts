@@ -3,24 +3,41 @@ import { PAYMENT_LABELS, STORE_NAME, storeContact } from "./constants";
 import { escapeHtml, formatDateTimeIST, formatINR } from "./format";
 import type { OrderEmailData } from "./types";
 
+function smtpHost() {
+  const raw = (process.env.SMTP_HOST || "").trim();
+  if (!raw) return "";
+  if (raw.includes("@")) {
+    const domain = raw.split("@").pop()?.toLowerCase() || "";
+    if (domain === "gmail.com" || domain === "googlemail.com") return "smtp.gmail.com";
+    return `smtp.${domain}`;
+  }
+  return raw;
+}
+
+function smtpPass() {
+  return (process.env.SMTP_PASS || "").replace(/\s+/g, "");
+}
+
 function smtpConfigured() {
   return Boolean(
-    process.env.SMTP_HOST &&
+    smtpHost() &&
       process.env.SMTP_USER &&
-      process.env.SMTP_PASS &&
+      smtpPass() &&
       process.env.EMAIL_FROM &&
       process.env.ADMIN_EMAIL,
   );
 }
 
 function transporter() {
+  const port = Number(process.env.SMTP_PORT || 587);
   return nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT || 587),
-    secure: Number(process.env.SMTP_PORT || 587) === 465,
+    host: smtpHost(),
+    port,
+    secure: port === 465,
+    requireTLS: port === 587,
     auth: {
       user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+      pass: smtpPass(),
     },
   });
 }
@@ -153,8 +170,9 @@ async function sendMail(options: { to: string; subject: string; html: string }) 
       console.error("Email delivery failed: SMTP did not accept the message.");
     }
     return { accepted };
-  } catch {
-    console.error("Email delivery failed: the mail provider rejected the request.");
+  } catch (error) {
+    const code = error instanceof Error ? error.message.split(" ")[0] : "unknown";
+    console.error(`Email delivery failed: SMTP request was rejected (${code}).`);
     return { accepted: false };
   }
 }

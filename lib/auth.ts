@@ -20,10 +20,14 @@ export async function requireAdmin() {
   return session;
 }
 
+function envValue(name: string) {
+  return process.env[name]?.trim().replace(/^['"]|['"]$/g, "") ?? "";
+}
+
 export async function verifyAdminCredentials(username: string, password: string) {
-  const expectedUser = process.env.ADMIN_USERNAME;
-  const passwordHash = process.env.ADMIN_PASSWORD_HASH;
-  if (!expectedUser || !passwordHash) {
+  const expectedUser = envValue("ADMIN_USERNAME");
+  const passwordHash = envValue("ADMIN_PASSWORD_HASH");
+  if (!expectedUser || !passwordHash.startsWith("$2")) {
     return false;
   }
   if (username !== expectedUser) {

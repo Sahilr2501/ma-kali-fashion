@@ -11,9 +11,10 @@ export function ContactForm() {
       className="space-y-4 border border-[#eadfce] bg-white p-5"
       onSubmit={async (event) => {
         event.preventDefault();
+        const formEl = event.currentTarget;
         setPending(true);
         setMessage("");
-        const form = new FormData(event.currentTarget);
+        const form = new FormData(formEl);
         const response = await fetch("/api/contact", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -27,7 +28,7 @@ export function ContactForm() {
         const data = (await response.json()) as { message?: string };
         setPending(false);
         setMessage(data.message || "Something went wrong.");
-        if (response.ok) event.currentTarget.reset();
+        if (response.ok) formEl.reset();
       }}
     >
       <label className="block text-sm">

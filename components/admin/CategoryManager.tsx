@@ -23,7 +23,8 @@ export function CategoryManager({ categories }: { categories: CategoryRow[] }) {
         className="grid gap-3 border border-[#eadfce] bg-white p-5 md:grid-cols-2"
         onSubmit={async (event) => {
           event.preventDefault();
-          const form = new FormData(event.currentTarget);
+          const formEl = event.currentTarget;
+          const form = new FormData(formEl);
           const response = await fetch("/api/admin/categories", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -39,7 +40,7 @@ export function CategoryManager({ categories }: { categories: CategoryRow[] }) {
             setMessage(data.message || "Could not add category.");
             return;
           }
-          event.currentTarget.reset();
+          formEl.reset();
           router.refresh();
         }}
       >
