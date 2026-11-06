@@ -12,13 +12,7 @@ A simple Next.js store for clothing and fashion jewellery. Customers browse prod
 ## Setup
 
 1. Copy `.env.example` to `.env.local` and fill in MongoDB, SMTP, admin, and session values.
-2. Create an admin password hash:
-
-```bash
-npm run hash-password -- "your-strong-password"
-```
-
-Put the printed hash in `ADMIN_PASSWORD_HASH`. Set `SESSION_SECRET` to a long random string.
+2. Set `ADMIN_USERNAME` and `ADMIN_PASSWORD` to the values you will use on `/admin/login`. Set `SESSION_SECRET` to a long random string.
 
 3. Install and run:
 
@@ -39,7 +33,7 @@ The seed script replaces catalogue data with the starter categories and products
 | `EMAIL_FROM` | Verified sender address |
 | `ADMIN_EMAIL` | Inbox that receives new-order notifications |
 | `ADMIN_USERNAME` | Admin sign-in name |
-| `ADMIN_PASSWORD_HASH` | bcrypt hash of the admin password |
+| `ADMIN_PASSWORD` | Admin sign-in password |
 | `SESSION_SECRET` | Signs the admin session cookie |
 | `NEXT_PUBLIC_SITE_URL` | Public site URL |
 | `NEXT_PUBLIC_STORE_PHONE` | Footer and contact details |

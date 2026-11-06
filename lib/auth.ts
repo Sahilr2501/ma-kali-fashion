@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-import bcrypt from "bcryptjs";
 import {
   COOKIE_NAME,
   createSessionToken,
@@ -26,15 +25,11 @@ function envValue(name: string) {
 
 export async function verifyAdminCredentials(username: string, password: string) {
   const expectedUser = envValue("ADMIN_USERNAME");
-  const passwordHash = envValue("ADMIN_PASSWORD_HASH");
-  if (!expectedUser || !passwordHash.startsWith("$2")) {
+  const expectedPassword = envValue("ADMIN_PASSWORD");
+  if (!expectedUser || !expectedPassword) {
     return false;
   }
-  if (username !== expectedUser) {
-    await bcrypt.compare(password, passwordHash);
-    return false;
-  }
-  return bcrypt.compare(password, passwordHash);
+  return username === expectedUser && password === expectedPassword;
 }
 
 export async function establishAdminSession(username: string) {
