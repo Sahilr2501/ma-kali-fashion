@@ -23,13 +23,17 @@ function envValue(name: string) {
   return process.env[name]?.trim().replace(/^['"]|['"]$/g, "") ?? "";
 }
 
+export function adminCredentialsConfigured() {
+  return Boolean(envValue("ADMIN_USERNAME") && envValue("ADMIN_PASSWORD"));
+}
+
 export async function verifyAdminCredentials(username: string, password: string) {
   const expectedUser = envValue("ADMIN_USERNAME");
   const expectedPassword = envValue("ADMIN_PASSWORD");
   if (!expectedUser || !expectedPassword) {
     return false;
   }
-  return username === expectedUser && password === expectedPassword;
+  return username.trim() === expectedUser && password.trim() === expectedPassword;
 }
 
 export async function establishAdminSession(username: string) {

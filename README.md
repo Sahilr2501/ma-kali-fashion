@@ -64,6 +64,15 @@ Jewellery copy uses **gold-coloured coated** where that is accurate. Do not desc
 
 Deploy the app on Vercel (or similar), set the same environment variables, use HTTPS, and send a real test order before launch.
 
+On Vercel, open **Project → Settings → Environment Variables** and set these for **Production** (then **Redeploy**):
+
+- `ADMIN_USERNAME` — same as local, for example `Ma_Kali_Admin`
+- `ADMIN_PASSWORD` — the plain password (do not use `ADMIN_PASSWORD_HASH`)
+- `SESSION_SECRET` — a long random string
+- MongoDB, SMTP, and the other store variables from `.env`
+
+Do not wrap the password in quotes in the Vercel dashboard. If the password contains a space, type the space as part of the value. Environment variables from `.env` are not uploaded automatically.
+
 ## Limitations of this version
 
 - No customer accounts, payment gateway, or order history
